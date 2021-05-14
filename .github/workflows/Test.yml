@@ -6,7 +6,7 @@ on:
       - 'main'
 
 jobs:
-  credentials:
+  default_param:
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS credentials
@@ -15,10 +15,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-  default_param:
-    needs: credentials
-    runs-on: ubuntu-latest
-    steps:
       - name: Fetch parameters from AWS SSM parameter store
         uses: oneyedev/aws-fetch-ssm-parameter-store@main
       - name: Assert Environment Variables
@@ -28,9 +24,14 @@ jobs:
           echo "::error ::Assert Fails"
           exit 1
   path_param:
-    needs: credentials
     runs-on: ubuntu-latest
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Fetch parameters from AWS SSM parameter store
         uses: oneyedev/aws-fetch-ssm-parameter-store@main
         with:
@@ -42,9 +43,14 @@ jobs:
           echo "::error ::Assert Fails"
           exit 1
   recursive_param:
-    needs: credentials
     runs-on: ubuntu-latest
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Fetch parameters from AWS SSM parameter store
         uses: oneyedev/aws-fetch-ssm-parameter-store@main
         with:
@@ -58,9 +64,14 @@ jobs:
           echo "::error ::Assert Fails"
           exit 1
   seperator_param:
-    needs: credentials
     runs-on: ubuntu-latest
     steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
       - name: Fetch parameters from AWS SSM parameter store
         uses: oneyedev/aws-fetch-ssm-parameter-store@main
         with:
