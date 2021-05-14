@@ -12,8 +12,8 @@ inputs:
     description: 'Fetch all nested parameters. All slash(/) character will be changed to underbar(_). For example, the parameter named "sample/key" will be changed to "sample_key"'
     required: false
     default: 'false'
-  seperator:
-    description: 'Other string will used to replace slash(/) character.'
+  separator:
+    description: 'Other string will used to replace slash(/) character. '
     required: false
     default: '_'
   mask:
