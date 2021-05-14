@@ -6,7 +6,7 @@ async function run() {
     const entries = await main.fetchParamsByPath({
       path: core.getInput('path'),
       recursive: core.getInput('recursive') === 'true',
-      replacePathWithEmpty: core.getInput('recursive') === 'true',
+      separator: core.getInput('separator'),
     })
     const mask = core.getInput('mask') === 'true'
     for (const { Name, Value } of entries) {
