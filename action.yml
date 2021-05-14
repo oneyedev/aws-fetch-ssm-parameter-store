@@ -1,0 +1,25 @@
+name: 'AWS Fetch SSM Parameter Store'
+description: 'Fetch Parameters from AWS SSM parameter store for Github Actions'
+branding:
+  icon: download-cloud
+  color: green
+inputs:
+  path:
+    description: 'Path in parameter store, Default is root(/)'
+    required: false
+    default: '/'
+  recursive:
+    description: 'Fetch all nested parameters'
+    required: false
+    default: 'false'
+  replacePathWithEmpty:
+    description: 'Replace path string with empty string for relative path usage'
+    required: false
+    default: 'false'
+  mask:
+    description: 'Masked from Logs'
+    required: false
+    default: 'false'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
