@@ -77,9 +77,9 @@ jobs:
         with:
           path: /sample
           recursive: true
-          separator: '-'
+          separator: '@'
       - name: Assert Environment Variables
-        if: ${{ env.SAMPLE_KEY != 'this is a sample key' || env.nested-NESTED_KEY != 'this is a nested value' }}
+        if: ${{ env.SAMPLE_KEY != 'this is a sample key' || env['nested@NESTED_KEY'] != 'this is a nested value' }}
         run: |
           echo "SAMPLE_KEY: $SAMPLE_KEY"
           echo "nested-NESTED_KEY: $nested-NESTED_KEY"
