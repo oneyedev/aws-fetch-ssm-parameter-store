@@ -23,22 +23,6 @@ describe('Fetch params test', () => {
     expect(result).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          Name: '/sample/SAMPLE_KEY',
-          Value: 'this is a sample key',
-        }),
-      ])
-    )
-  })
-
-  it('Path string can be replaced with a empty string', async () => {
-    const result = await main.fetchParamsByPath({
-      path: '/sample',
-      replacePathWithEmpty: true,
-    })
-    expect(result).toHaveLength(1)
-    expect(result).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
           Name: 'SAMPLE_KEY',
           Value: 'this is a sample key',
         }),
@@ -46,22 +30,8 @@ describe('Fetch params test', () => {
     )
   })
 
-  it('Root path string should be maintained', async () => {
-    const result = await main.fetchParamsByPath({
-      replacePathWithEmpty: true,
-    })
-    expect(result).toHaveLength(1)
-    expect(result).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          Name: 'SAMPLE_ROOT_KEY',
-          Value: 'THIS IS A SAMPLE ROOT VALUE',
-        }),
-      ])
-    )
-  })
-
-  it('All nested params will be fetched if set "recursive" true', async () => {
+  it(`All nested params will be fetched if set "recursive" true
+    - slash(/) charater will be replaced with underbar(_) character`, async () => {
     const result = await main.fetchParamsByPath({
       recursive: true,
     })
@@ -72,15 +42,36 @@ describe('Fetch params test', () => {
           Name: 'SAMPLE_ROOT_KEY',
           Value: 'THIS IS A SAMPLE ROOT VALUE',
         }),
-      ]),
-      expect.objectContaining({
-        Name: '/sample/SAMPLE_KEY',
-        Value: 'this is a sample key',
-      }),
-      expect.objectContaining({
-        Name: '/sample/nested/NESTED_KEY',
-        Value: 'this is a nested value',
-      })
+        expect.objectContaining({
+          Name: 'sample_SAMPLE_KEY',
+          Value: 'this is a sample key',
+        }),
+        expect.objectContaining({
+          Name: 'sample_nested_NESTED_KEY',
+          Value: 'this is a nested value',
+        }),
+      ])
+    )
+  })
+
+  it(`Default seperater(_) can be overrided specific one`, async () => {
+    const result = await main.fetchParamsByPath({
+      path: '/sample',
+      recursive: true,
+      separator: '&&',
+    })
+    expect(result).toHaveLength(2)
+    expect(result).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          Name: 'SAMPLE_KEY',
+          Value: 'this is a sample key',
+        }),
+        expect.objectContaining({
+          Name: 'nested&&NESTED_KEY',
+          Value: 'this is a nested value',
+        }),
+      ])
     )
   })
 })

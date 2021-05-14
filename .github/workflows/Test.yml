@@ -36,24 +36,9 @@ jobs:
         with:
           path: /sample
       - name: Assert Environment Variables
-        if: ${{ env.sample/SAMPLE_KEY != 'this is a sample key' }}
-        run: |
-          echo "sample/SAMPLE_KEY: $sample/SAMPLE_KEY"
-          echo "::error ::Assert Fails"
-          exit 1
-  replace_param:
-    needs: credentials
-    runs-on: ubuntu-latest
-    steps:
-      - name: Fetch parameters from AWS SSM parameter store
-        uses: oneyedev/aws-fetch-ssm-parameter-store@main
-        with:
-          path: /sample
-          replacePathWithEmpty: true
-      - name: Assert Environment Variables
         if: ${{ env.SAMPLE_KEY != 'this is a sample key' }}
         run: |
-          echo "SAMPLE_KEY: $SAMPLE_KEY"
+          echo "SAMPLE_KEY: $sample/SAMPLE_KEY"
           echo "::error ::Assert Fails"
           exit 1
   recursive_param:
@@ -66,9 +51,26 @@ jobs:
           path: /sample
           recursive: true
       - name: Assert Environment Variables
-        if: ${{ env./sample/SAMPLE_KEY != 'this is a sample key' || env./sample/nested/NESTED_KEY != 'this is a nested value' }}
+        if: ${{ env.SAMPLE_KEY != 'this is a sample key' || env.nested_NESTED_KEY != 'this is a nested value' }}
         run: |
-          echo "/sample/SAMPLE_KEY: $/sample/SAMPLE_KEY"
-          echo "/sample/nested/NESTED_KEY: $/sample/nested/NESTED_KEY"
+          echo "SAMPLE_KEY: $SAMPLE_KEY"
+          echo "nested_NESTED_KEY: $nested_NESTED_KEY"
+          echo "::error ::Assert Fails"
+          exit 1
+  seperator_param:
+    needs: credentials
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch parameters from AWS SSM parameter store
+        uses: oneyedev/aws-fetch-ssm-parameter-store@main
+        with:
+          path: /sample
+          recursive: true
+          seperator: '@'
+      - name: Assert Environment Variables
+        if: ${{ env.SAMPLE_KEY != 'this is a sample key' || env.nested@NESTED_KEY != 'this is a nested value' }}
+        run: |
+          echo "SAMPLE_KEY: $SAMPLE_KEY"
+          echo "nested@NESTED_KEY: $nested@NESTED_KEY"
           echo "::error ::Assert Fails"
           exit 1

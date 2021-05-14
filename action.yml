@@ -5,17 +5,17 @@ branding:
   color: green
 inputs:
   path:
-    description: 'Path in parameter store, Default is root(/)'
+    description: 'Path in parameter store. This is should started with slash(/)'
     required: false
     default: '/'
   recursive:
-    description: 'Fetch all nested parameters'
+    description: 'Fetch all nested parameters. All slash(/) character will be changed to underbar(_). For example, the parameter named "sample/key" will be changed to "sample_key"'
     required: false
     default: 'false'
-  replacePathWithEmpty:
-    description: 'Replace path string with empty string for relative path usage'
+  seperator:
+    description: 'Other string will used to replace slash(/) character.'
     required: false
-    default: 'false'
+    default: '_'
   mask:
     description: 'Masked from Logs'
     required: false
